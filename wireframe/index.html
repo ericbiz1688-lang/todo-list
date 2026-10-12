@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Todo App Wireframe</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 32px 20px; color: #222; background: #eee; font: 16px Arial, sans-serif; }
+        main { max-width: 780px; margin: auto; padding: 32px; background: white; border: 2px solid #555; }
+        h1 { margin: 8px 0; }
+        h2 { margin-top: 0; font-size: 22px; }
+        .note { color: #555; font-size: 14px; line-height: 1.5; }
+        section { border: 1px solid #777; padding: 20px; margin-top: 24px; }
+        .field { border: 1px solid #555; padding: 12px; margin: 8px 0 16px; color: #555; }
+        .button { display: inline-block; border: 1px solid #555; padding: 10px 14px; margin: 0 6px 6px 0; background: #eee; }
+        .conditional { border-style: dashed; }
+        .row { display: flex; gap: 12px; align-items: center; border-top: 1px solid #aaa; padding: 14px 0; flex-wrap: wrap; }
+        .task { flex: 1; min-width: 140px; }
+        .row .field, .row .button { margin: 0; }
+        .heading { display: flex; justify-content: space-between; gap: 12px; }
+        .feedback { border: 1px dashed #777; padding: 12px; margin-top: 16px; }
+        @media (max-width: 520px) { body { padding: 12px; } main { padding: 16px; } section { padding: 14px; } }
+        @media print { body { background: white; padding: 0; } main { border: 0; } section { break-inside: avoid; } }
+    </style>
+</head>
+<body>
+    <main>
+        <p class="note">LOW-FIDELITY WIREFRAME · Layout reference · Static preview</p>
+        <header>
+            <p>YOUR DAILY PLANNER</p>
+            <h1>My Todo List</h1>
+            <p>Make room for what matters. Urgency: 1 is low, 5 is high.</p>
+        </header>
+        <section aria-labelledby="formHeading">
+            <h2 id="formHeading">Create / edit task</h2>
+            <div class="feedback conditional">Validation error area — shown for invalid input</div>
+            <p>Task name</p>
+            <div class="field">What needs to be done? [text input]</div>
+            <p>Urgency</p>
+            <div class="field">3 — Medium [dropdown: 1–5 ▾]</div>
+            <span class="button">Add todo / Save changes</span>
+            <span class="button conditional">Cancel edit</span>
+            <p class="note">Edit fills these fields, changes the submit label, and shows Cancel edit.</p>
+        </section>
+        <section aria-labelledby="planningHeading">
+            <h2 id="planningHeading">Plan your day</h2>
+            <p>Check Singapore weather before planning outdoor tasks.</p>
+            <span class="button">Check weather</span>
+            <div class="feedback">Weather loading / result / error</div>
+            <p class="note">Weather data by Open-Meteo.</p>
+            <p>Turn a goal into tasks</p>
+            <div class="field">Enter a goal [text input]</div>
+            <p class="note">Goal-sharing notice: review suggestions before adding them.</p>
+            <span class="button">Generate AI suggestions</span>
+            <div class="feedback">AI loading / result / error</div>
+            <div class="row"><span class="task">Suggested task — Urgency 3</span><span class="button">Add this task</span></div>
+        </section>
+        <section aria-labelledby="listHeading">
+            <div class="heading"><h2 id="listHeading">Your tasks</h2><span>2 task(s)</span></div>
+            <p class="note">Tasks sorted by urgency, highest first.</p>
+            <div class="row"><span class="task">Example task A</span><span class="field">Urgency 5 ▾</span><span class="button">Edit</span><span class="button">Delete</span></div>
+            <div class="row"><span class="task">Example task B</span><span class="field">Urgency 3 ▾</span><span class="button">Edit</span><span class="button">Delete</span></div>
+            <div class="feedback conditional">Empty state: No tasks yet. Add your first todo above.</div>
+            <p class="note">Delete opens a confirmation dialog. Changing urgency saves that task immediately.</p>
+        </section>
+        <div class="feedback">Status toast: Todo added / updated / deleted, or request error</div>
+        <p class="note">Dashed boxes represent conditional states. Controls are disabled while requests are processing. This wireframe is static; buttons and fields are illustrative.</p>
+    </main>
+</body>
+</html>

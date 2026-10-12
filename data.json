@@ -31,12 +31,17 @@
     },
     {
         "name": "Run unit tests",
-        "urgency": 5,
+        "urgency": 3,
         "id": "95a89a4e-1f3c-4e00-96dd-d87ff6215099"
     },
     {
         "name": "Plan fishing trip: choose location and date",
         "urgency": 3,
         "id": "efef0dcd-0d97-4b45-9017-43d49513a7a3"
+    },
+    {
+        "name": "Find a safe swimming spot",
+        "urgency": 3,
+        "id": "96f55ee0-2cac-4fcf-bbd3-e46b124d81a9"
     }
 ]
