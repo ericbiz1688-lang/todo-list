@@ -1,0 +1,56 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Todo List</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="data.js?v=lo12-2" defer></script>
+    <script src="script.js?v=lo12-2" defer></script>
+</head>
+<body>
+    <main>
+        <header><p class="eyebrow">YOUR DAILY PLANNER</p><h1>My Todo List</h1>
+        <p>Make room for what matters. Urgency: 1 is low, 5 is high.</p></header>
+        
+        <!-- Assessment: form allows users to create and edit todo resources. -->
+        <form id="todoForm">
+            <p id="formError" class="error" role="alert" hidden></p>
+            <label for="todoName">Task name</label>
+            <input id="todoName" placeholder="What needs to be done?" required maxlength="120">
+            <label for="taskUrgency">Urgency</label>
+            <select id="taskUrgency">
+                <option value="1">1 — Low</option><option value="2">2</option>
+                <option value="3" selected>3 — Medium</option><option value="4">4</option>
+                <option value="5">5 — High</option>
+            </select>
+            <div class="actions"><button id="addBtn" type="submit" class="primary">Add todo</button>
+            <button id="cancelBtn" type="button" hidden>Cancel edit</button></div>
+        </form>
+        <section aria-labelledby="planningHeading">
+            <h2 id="planningHeading">Plan your day</h2>
+            <p>Check Singapore weather before planning outdoor tasks.</p>
+            <button id="weatherBtn" type="button">Check weather</button>
+            <p id="weatherResult" role="status" aria-live="polite"></p>
+            <p>Weather data by <a href="https://open-meteo.com/">Open-Meteo</a>.</p>
+            <form id="aiForm">
+                <label for="goalName">Turn a goal into tasks</label>
+                <input id="goalName" required maxlength="120" placeholder="Prepare for my JavaScript assessment">
+                <p>Your goal is sent to Groq when you generate suggestions. Review each suggestion before adding it.</p>
+                <button type="submit">Generate AI suggestions</button>
+                <p id="aiStatus" role="status" aria-live="polite"></p>
+                <ul id="suggestionList"></ul>
+            </form>
+        </section>
+        <section aria-labelledby="listHeading">
+            <div class="list-header"><h2 id="listHeading">Your tasks</h2><span id="taskCount">0 task(s)</span></div>
+            <p id="emptyState" hidden>No tasks yet. Add your first todo above.</p>
+            <!-- Assessment: all resources are visible, with edit and delete actions. -->
+            <ul id="todoList"></ul>
+        </section>
+    </main>
+    <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>
+
+

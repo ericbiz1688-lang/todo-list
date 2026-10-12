@@ -1,0 +1,30 @@
+﻿* { box-sizing: border-box; }
+body { margin: 0; background: #f3f5fa; color: #202b43; font-family: system-ui, sans-serif; }
+main { max-width: 800px; margin: auto; padding: 40px 20px; }
+h1 { margin: 0; font-size: 2.5rem; }
+h2 { font-size: 1.3rem; }
+header p, footer { color: #566178; }
+.eyebrow { font-size: .75rem; letter-spacing: .15em; font-weight: 700; }
+form { background: white; padding: 24px; border: 1px solid #dce2ec; border-radius: 16px; }
+label { display: block; margin-bottom: 8px; font-weight: 600; }
+input, select { width: 100%; padding: 12px; margin-bottom: 18px; border: 1px solid #a6b1c5; border-radius: 8px; font: inherit; }
+button { border: 1px solid #a6b1c5; border-radius: 8px; padding: 9px 14px; background: white; color: #202b43; font: inherit; cursor: pointer; }
+button:hover { background: #edf1fa; }
+button:disabled { opacity: .5; cursor: wait; }
+.primary { background: #3459ce; border-color: #3459ce; color: white; }
+.primary:hover { background: #2646ae; }
+.danger { color: #a32438; }
+.actions, .list-header { display: flex; align-items: center; gap: 12px; }
+.list-header { justify-content: space-between; margin-top: 20px; }
+ul { padding: 0; list-style: none; }
+li { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 16px; background: white; border: 1px solid #dce2ec; border-radius: 10px; margin-bottom: 10px; }
+.task-name { flex: 1; min-width: 140px; overflow-wrap: anywhere; }
+.badge { background: #edf1fa; padding: 6px 10px; border-radius: 20px; font-size: .85rem; }
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 8px); background: #202b43; color: white; padding: 12px 20px; border-radius: 10px; box-shadow: 0 4px 20px #202b4326; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; max-width: calc(100vw - 32px); }
+.toast.visible { opacity: 1; transform: translate(-50%, 0); }
+.error { background: #ffe7eb; color: #8a1730; padding: 12px 16px; border-radius: 10px; margin-top: 0; }
+@media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
+footer { margin-top: 24px; font-size: .85rem; line-height: 1.6; }
+:focus-visible { outline: 3px solid #6489ed; outline-offset: 3px; }
+[hidden] { display: none !important; }
+@media (max-width: 480px) { main { padding: 24px 14px; } .task-name { flex-basis: 100%; } }
