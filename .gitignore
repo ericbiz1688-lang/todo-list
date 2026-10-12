@@ -1,3 +1,5 @@
 .env
+node_modules/
+.verify-axios-*/
 .env.*
 !.env.example

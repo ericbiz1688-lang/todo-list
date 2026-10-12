@@ -34,8 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function setBusy(value) {
         busy = value;
-        for (const button of document.querySelectorAll("button")) {
-            button.disabled = value;
+        for (const control of document.querySelectorAll("button, .task-urgency")) {
+            control.disabled = value;
         }
     }
 
@@ -46,14 +46,36 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelector("#emptyState").hidden = todos.length > 0;
         // REQ - At least one loop | MET: for...of iterates over the todos array.
         // REQ - Allow the user to see all created resources, objects or documents | MET: render every todo as a list row.
-        for (const todo of todos) {
+        const sortedTodos = [...todos].sort((first, second) => second.urgency - first.urgency);
+        for (const todo of sortedTodos) {
             const row = document.createElement("li");
             const name = document.createElement("span");
             name.className = "task-name";
             name.textContent = todo.name; // User content is text, never executable HTML.
-            const urgency = document.createElement("span");
-            urgency.className = "badge";
-            urgency.textContent = `Urgency ${todo.urgency}`;
+            const urgency = document.createElement("select");
+            urgency.className = "task-urgency";
+            urgency.setAttribute("aria-label", `Urgency for ${todo.name}`);
+            for (let level = 1; level <= 5; level++) {
+                const option = document.createElement("option");
+                option.value = level;
+                option.textContent = `Urgency ${level}`;
+                urgency.append(option);
+            }
+            urgency.value = todo.urgency;
+            // PATCH changes urgency only; Edit continues to use PUT for the full task.
+            urgency.addEventListener("change", async () => {
+                if (busy) { urgency.value = todo.urgency; return; }
+                setBusy(true);
+                try {
+                    todos = await requestTodos("PATCH", todo.id, { urgency: Number(urgency.value) });
+                    if (editingId === todo.id) urgencyInput.value = urgency.value;
+                    renderTodos();
+                    showStatus("Urgency updated.");
+                } catch (error) {
+                    urgency.value = todo.urgency;
+                    showStatus(error.message, true);
+                } finally { setBusy(false); }
+            });
             const edit = document.createElement("button");
             edit.textContent = "Edit";
             // REQ - Allow the user to edit instances of at least one type of resources, object or document | MET: Edit fills the form; submitting sends PUT and updates data.json.

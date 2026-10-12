@@ -20,6 +20,7 @@ ul { padding: 0; list-style: none; }
 li { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 16px; background: white; border: 1px solid #dce2ec; border-radius: 10px; margin-bottom: 10px; }
 .task-name { flex: 1; min-width: 140px; overflow-wrap: anywhere; }
 .badge { background: #edf1fa; padding: 6px 10px; border-radius: 20px; font-size: .85rem; }
+.task-urgency { width: auto; margin: 0; padding: 8px; font-size: .85rem; }
 .toast { position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 8px); background: #202b43; color: white; padding: 12px 20px; border-radius: 10px; box-shadow: 0 4px 20px #202b4326; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; max-width: calc(100vw - 32px); }
 .toast.visible { opacity: 1; transform: translate(-50%, 0); }
 .error { background: #ffe7eb; color: #8a1730; padding: 12px 16px; border-radius: 10px; margin-top: 0; }

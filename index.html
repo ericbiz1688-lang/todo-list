@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>My Todo List</title>
     <link rel="stylesheet" href="style.css">
-    <script src="data.js?v=lo12-2" defer></script>
-    <script src="script.js?v=lo12-2" defer></script>
+    <script src="axios.min.js" defer></script>
+    <script src="data.js?v=axios-1" defer></script>
+    <script src="script.js?v=axios-1" defer></script>
 </head>
 <body>
     <main>
@@ -44,6 +45,7 @@
         </section>
         <section aria-labelledby="listHeading">
             <div class="list-header"><h2 id="listHeading">Your tasks</h2><span id="taskCount">0 task(s)</span></div>
+            <p>Tasks are sorted by urgency, highest first.</p>
             <p id="emptyState" hidden>No tasks yet. Add your first todo above.</p>
             <!-- Assessment: all resources are visible, with edit and delete actions. -->
             <ul id="todoList"></ul>

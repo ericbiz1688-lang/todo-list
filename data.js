@@ -13,36 +13,36 @@ function validateTodo(name, urgency) {
 }
 
 async function requestPlanning(path, todo) {
-    const response = await fetch(path, {
-        method: todo ? "POST" : "GET",
-        headers: { "Content-Type": "application/json" },
-        body: todo ? JSON.stringify(todo) : undefined
-    });
-    if (!response.headers.get("Content-Type")?.includes("application/json")) {
-        throw new Error("The API returned a page instead of JSON. Start the app with npm start and open port 8000.");
-    }
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Unable to load planning information.");
-    return data;
+    return requestJson(todo ? "POST" : "GET", path, todo);
 }
 
 async function requestTodos(method = "GET", id = "", todo) {
-    // REQ - Display the ability to perform at least one asynchronous call. | MET: await fetch performs an asynchronous network request.
-    // AJAX implementation: fetch sends the GET, POST, PUT or DELETE method supplied by script.js.
-    // The JavaScript server loads data.json for each operation and saves mutations.
-    const response = await fetch(`/api/todos${id ? `/${encodeURIComponent(id)}` : ""}`, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        cache: "no-store",
-        body: todo ? JSON.stringify(todo) : undefined
-    });
-    // REQ - Display the ability to fetch data from a JSON resource. | MET: fetch retrieves /api/todos and response.json() parses JSON sourced from data.json.
-    if (!response.headers.get("Content-Type")?.includes("application/json")) {
-        throw new Error("The tasks API is unavailable. Start the app with npm start and open port 8000.");
+    // REQ - Async AJAX and JSON resource consumption through Axios.
+    return requestJson(method, `/api/todos${id ? `/${encodeURIComponent(id)}` : ""}`, todo);
+}
+
+async function requestJson(method, url, data) {
+    try {
+        const config = { timeout: 40000, responseType: "json" };
+        let response;
+        switch (method) {
+            case "GET": response = await axios.get(url, config); break;
+            case "POST": response = await axios.post(url, data, config); break;
+            case "PUT": response = await axios.put(url, data, config); break;
+            case "PATCH": response = await axios.patch(url, data, config); break;
+            case "DELETE": response = await axios.delete(url, config); break;
+            default: throw new Error("Unsupported request method.");
+        }
+        if (!response.headers["content-type"]?.includes("application/json")) {
+            throw new Error("The API returned a page instead of JSON. Start the app with npm start and open port 8000.");
+        }
+        return response.data;
+    } catch (error) {
+        if (!axios.isAxiosError(error)) throw error;
+        throw new Error(error.response?.data?.error || (error.code === "ECONNABORTED"
+            ? "The request timed out. Please try again."
+            : "Unable to reach the API. Check the server and connection."));
     }
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Unable to complete the request.");
-    return data;
 }
 
 
