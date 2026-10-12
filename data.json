@@ -7,7 +7,7 @@
     {
         "id": "sample-2",
         "name": "Clean the room",
-        "urgency": 2
+        "urgency": 3
     },
     {
         "id": "sample-3",
@@ -43,5 +43,10 @@
         "name": "Find a safe swimming spot",
         "urgency": 3,
         "id": "96f55ee0-2cac-4fcf-bbd3-e46b124d81a9"
+    },
+    {
+        "name": "Check local pool hours and availability",
+        "urgency": 4,
+        "id": "29848784-cc46-42bb-9b26-643331059f6f"
     }
 ]
