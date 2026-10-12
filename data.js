@@ -18,6 +18,9 @@ async function requestPlanning(path, todo) {
         headers: { "Content-Type": "application/json" },
         body: todo ? JSON.stringify(todo) : undefined
     });
+    if (!response.headers.get("Content-Type")?.includes("application/json")) {
+        throw new Error("The API returned a page instead of JSON. Start the app with npm start and open port 8000.");
+    }
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || "Unable to load planning information.");
     return data;
@@ -34,6 +37,9 @@ async function requestTodos(method = "GET", id = "", todo) {
         body: todo ? JSON.stringify(todo) : undefined
     });
     // REQ - Display the ability to fetch data from a JSON resource. | MET: fetch retrieves /api/todos and response.json() parses JSON sourced from data.json.
+    if (!response.headers.get("Content-Type")?.includes("application/json")) {
+        throw new Error("The tasks API is unavailable. Start the app with npm start and open port 8000.");
+    }
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || "Unable to complete the request.");
     return data;

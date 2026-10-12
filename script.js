@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // REQ - At least one function call | MET: renderTodos() is called to refresh the list.
             renderTodos();
         } catch (error) {
-            showStatus("Unable to load your tasks. Please reload and try again.", true);
+            showStatus(`Unable to load your tasks. ${error.message}`, true);
         } finally {
             setBusy(false);
         }

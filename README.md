@@ -1,6 +1,14 @@
 ﻿# Running the todo app
 
 Run `node server.js` in this folder, then open http://localhost:8000.
+
+## Running in GitHub Codespaces
+
+From the folder containing server.js and data.json, run `npm start` with Node.js 22.9 or later. No npm install is needed. This starts the API and the web page together on port 8000 and loads a local .env file when present.
+
+In the Codespaces Ports tab, open port 8000 in the browser. Use its forwarded HTTPS URL, not the URL for Live Server or a Python static server. Keep the terminal process running. Check `curl http://localhost:8000/api/todos` in the Codespaces terminal: it should return a JSON array. If it fails, inspect the Node terminal for errors and check that data.json was uploaded and contains a valid JSON array.
+
+The local .env file is ignored by Git and therefore does not transfer through a push. Configure GROQ_API_KEY as a Codespaces secret or a private .env inside the codespace. GROQ_MODEL is optional; the default is openai/gpt-oss-20b. A missing Groq key affects AI suggestions only, not loading saved tasks.
 Node.js is the only prerequisite; no npm packages are needed. Use this server rather than opening index.html directly or using a static Live Server.
 
 The browser sends GET, POST, PUT and DELETE requests to `/api/todos`. Every operation reads `data.json`; successful create, edit and delete operations write the updated array back to that file. Data survives page reloads and server restarts.

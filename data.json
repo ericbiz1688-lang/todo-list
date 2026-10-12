@@ -28,5 +28,10 @@
         "name": "Pack swimwear, towel, goggles, and water bottle",
         "urgency": 3,
         "id": "259ee9d6-ec32-4bb4-83f0-9a8d72f5615f"
+    },
+    {
+        "name": "Check swimming gear",
+        "urgency": 4,
+        "id": "644dd79e-bdc7-4e2e-8cfe-4ced68d885bf"
     }
 ]
