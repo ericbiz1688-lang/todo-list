@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function renderTodos() {
+        // CRUD READ UI: display all saved tasks, sorted by highest urgency first.
         const list = document.querySelector("#todoList");
         list.replaceChildren();
         document.querySelector("#taskCount").textContent = `${todos.length} task(s)`;
@@ -64,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
             urgency.value = todo.urgency;
             // PATCH changes urgency only; Edit continues to use PUT for the full task.
             urgency.addEventListener("change", async () => {
+                // CRUD UPDATE (PATCH): save only this task's urgency.
                 if (busy) { urgency.value = todo.urgency; return; }
                 setBusy(true);
                 try {
@@ -80,6 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
             edit.textContent = "Edit";
             // REQ - Allow the user to edit instances of at least one type of resources, object or document | MET: Edit fills the form; submitting sends PUT and updates data.json.
             edit.addEventListener("click", () => {
+                // CRUD UPDATE UI: load the selected task into the form for editing.
+                // The form submit handler below saves the full edit with PUT.
                 editingId = todo.id;
                 nameInput.value = todo.name;
                 urgencyInput.value = todo.urgency;
@@ -92,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
             remove.className = "danger";
             // REQ - Allow the user to delete instances of at least one type of resource, object or document | MET: Delete confirms, sends DELETE, updates data.json, and refreshes the list.
             remove.addEventListener("click", async () => {
+                // CRUD DELETE: confirm removal, send DELETE, and refresh the list.
                 if (busy || !confirm(`Delete "${todo.name}"?`)) {
                     return;
                 }
@@ -115,6 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // REQ - Allow the user to create instances of at least one type of resource, object or document | MET: submitting a new todo sends POST; the server creates an object and saves it to data.json.
     form.addEventListener("submit", async (event) => {
+        // CRUD CREATE / UPDATE: POST adds a new task; PUT saves a full task edit.
         event.preventDefault();
         if (busy) return;
         setBusy(true);
@@ -129,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // following requests via AJAX: POST, PATCH or PUT. | MET: this call sends POST on
             // create or PUT on edit; loadTodos below sends GET when the page opens.
             todos = await requestTodos(current ? "PUT" : "POST", current ? current.id : "",
-                validateTodo(nameInput.value, urgencyInput.value));
+                validateTodo(nameInput.value, urgencyInput.value, todos, editingId));
             resetForm();
             // REQ - At least one function call | MET: renderTodos() is called to refresh the list.
             renderTodos();
@@ -174,10 +180,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 add.type = "button";
                 add.textContent = "Add this task";
                 add.addEventListener("click", async () => {
+                    // CRUD CREATE FROM AI: POST saves a reviewed suggestion as a task.
                     if (busy) return;
                     setBusy(true);
                     try {
-                        todos = await requestTodos("POST", "", validateTodo(suggestion.name, suggestion.urgency));
+                        todos = await requestTodos("POST", "", validateTodo(suggestion.name, suggestion.urgency, todos));
                         row.remove();
                         renderTodos();
                         showStatus("Suggested task added.");
@@ -193,6 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     async function loadTodos() {
+        // CRUD READ (GET): retrieve saved tasks when the page opens.
         setBusy(true);
         try {
             // REQ - AJAX GET | MET: loading the page executes GET /api/todos; POST and PUT execute when the form is submitted.

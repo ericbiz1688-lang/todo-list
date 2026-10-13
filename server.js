@@ -13,6 +13,7 @@ function sendJson(response, status, data) {
 }
 
 async function loadTodos() {
+    // CRUD READ STORAGE: read the saved todo array from data.json.
     // REQUIREMENTS 2 AND 5 - Read data.json and parse its array of todo objects.
     // REQUIREMENT 4 - Asynchronous file access with await fs.readFile.
     const todos = JSON.parse((await fs.readFile(dataPath, "utf8")).replace(/^\uFEFF/, ""));
@@ -43,7 +44,15 @@ async function readTodo(request, partial = false) {
     };
 }
 
+function checkDuplicateTodo(todos, name, editingId = null) {
+    if (todos.some((todo) => todo.id !== editingId
+        && todo.name.trim().toLowerCase() === name.trim().toLowerCase())) {
+        throw Object.assign(new Error("This todo already exists."), { status: 409 });
+    }
+}
+
 function updateData(transform) {
+    // CRUD WRITE STORAGE: persist create, update, and delete transformations.
     // Serialize writes; each mutation reloads data.json and saves atomically.
     const operation = writes.then(async () => {
         const updated = transform(await loadTodos());
@@ -100,23 +109,33 @@ async function handleRequest(request, response) {
         const id = route[1];
         // REQUIREMENT 6 - Handle AJAX GET and return data.json contents as JSON.
         if (request.method === "GET" && !id) {
+            // CRUD READ endpoint: GET /api/todos returns all saved tasks.
             await writes;
             sendJson(response, 200, await loadTodos());
             return;
         }
         // REQUIREMENT 6 / CREATE - AJAX POST adds a todo and saves data.json.
         if (request.method === "POST" && !id) {
+            // CRUD CREATE endpoint: POST /api/todos validates and saves a new task.
             const todo = { ...await readTodo(request), id: randomUUID() };
-            sendJson(response, 201, await updateData((todos) => [...todos, todo]));
+            sendJson(response, 201, await updateData((todos) => {
+                checkDuplicateTodo(todos, todo.name);
+                return [...todos, todo];
+            }));
             return;
         }
         // REQUIREMENT 6 / EDIT AND DELETE - AJAX PUT updates; DELETE removes a todo.
         // Both reload data.json and persist changes through updateData.
         if (id && ["PUT", "PATCH", "DELETE"].includes(request.method)) {
+            // CRUD UPDATE endpoints: PUT validates the complete task; PATCH validates supplied fields.
+            // CRUD DELETE endpoint: DELETE removes the task identified by its ID.
             const fields = request.method !== "DELETE" ? await readTodo(request, request.method === "PATCH") : null;
             const updated = await updateData((todos) => {
                 if (!todos.some((todo) => todo.id === id)) {
                     throw Object.assign(new Error("Todo not found."), { status: 404 });
+                }
+                if (fields && Object.hasOwn(fields, "name")) {
+                    checkDuplicateTodo(todos, fields.name, id);
                 }
                 return fields ? todos.map((todo) => todo.id === id ? { ...todo, ...fields } : todo)
                     : todos.filter((todo) => todo.id !== id);
